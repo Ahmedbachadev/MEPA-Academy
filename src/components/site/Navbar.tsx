@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 import { Logo } from "./Logo";
+import { settingsQuery } from "@/lib/site-queries";
+import { resolveImage } from "@/lib/site-images";
 
 const links = [
   { href: "#home", label: "Home" },
@@ -17,6 +20,8 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("home");
+  const { data: settings } = useQuery(settingsQuery);
+  const logoSrc = settings?.logo_url ? resolveImage(settings.logo_url) : undefined;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -53,7 +58,7 @@ export function Navbar() {
     >
       <div className="container-page flex h-16 items-center justify-between gap-4 md:h-20">
         <a href="#home" className="shrink-0" aria-label="MEPA home">
-          <Logo />
+          <Logo src={logoSrc} />
         </a>
 
         <nav className="hidden items-center gap-7 lg:flex" aria-label="Primary">

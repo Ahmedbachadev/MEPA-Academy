@@ -2,10 +2,11 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { ArrowRight, GraduationCap, Award, Users, BookOpen } from "lucide-react";
 import { heroQuery } from "@/lib/site-queries";
-import { heroCampus } from "@/lib/site-images";
+import { resolveImage } from "@/lib/site-images";
 
 export function Hero() {
   const { data } = useSuspenseQuery(heroQuery);
+  const heroImg = resolveImage((data as { image?: string | null } | null)?.image);
 
   const stats = [
     { icon: Users, label: "Students Trained", value: data?.stat_students ?? 0, suffix: "+" },
@@ -107,7 +108,7 @@ export function Hero() {
           <div className="absolute -inset-4 -z-10 rounded-[2rem] bg-gradient-brand opacity-20 blur-2xl" />
           <div className="relative overflow-hidden rounded-[1.75rem] border border-border shadow-elevated">
             <img
-              src={heroCampus}
+              src={heroImg}
               alt="MEPA Academy modern campus"
               width={1600}
               height={1024}

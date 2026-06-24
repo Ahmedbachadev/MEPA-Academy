@@ -6,6 +6,7 @@ import { settingsQuery } from "@/lib/site-queries";
 import { AdminHeading, Field, SaveButton, useSaver } from "@/components/admin/ui";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { ImagePicker } from "@/components/admin/ImagePicker";
 
 export const Route = createFileRoute("/_authenticated/admin/settings")({ component: SettingsAdmin });
 
@@ -27,13 +28,19 @@ function SettingsAdmin() {
             address: form.address, email: form.email, phone: form.phone,
             working_hours: form.working_hours, facebook: form.facebook,
             instagram: form.instagram, linkedin: form.linkedin, footer_text: form.footer_text,
+            logo_url: form.logo_url,
           }).eq("id", form.id),
           ["site", "settings"]
         );
       }}
       className="space-y-5"
     >
-      <AdminHeading title="Site Settings" description="Contact info, social links, and footer." />
+      <AdminHeading title="Site Settings" description="Brand logo, contact info, social links, and footer." />
+      <ImagePicker
+        label="Brand logo (shown in navbar, footer, and other places)"
+        value={form.logo_url}
+        onChange={(v) => setForm({ ...form, logo_url: v })}
+      />
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Email"><Input value={form.email ?? ""} onChange={set("email")} /></Field>
         <Field label="Phone"><Input value={form.phone ?? ""} onChange={set("phone")} /></Field>
@@ -48,3 +55,4 @@ function SettingsAdmin() {
     </form>
   );
 }
+

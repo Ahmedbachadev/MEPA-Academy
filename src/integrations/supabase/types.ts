@@ -42,6 +42,8 @@ export type Database = {
         Row: {
           created_at: string
           description: string
+          details: string | null
+          gallery: Json
           id: string
           image: string | null
           sort_order: number
@@ -51,6 +53,8 @@ export type Database = {
         Insert: {
           created_at?: string
           description: string
+          details?: string | null
+          gallery?: Json
           id?: string
           image?: string | null
           sort_order?: number
@@ -60,6 +64,8 @@ export type Database = {
         Update: {
           created_at?: string
           description?: string
+          details?: string | null
+          gallery?: Json
           id?: string
           image?: string | null
           sort_order?: number
@@ -126,8 +132,10 @@ export type Database = {
         Row: {
           created_at: string
           description: string
+          details: string | null
           duration: string
           fee: string
+          gallery: Json
           id: string
           image: string | null
           sort_order: number
@@ -137,8 +145,10 @@ export type Database = {
         Insert: {
           created_at?: string
           description: string
+          details?: string | null
           duration: string
           fee: string
+          gallery?: Json
           id?: string
           image?: string | null
           sort_order?: number
@@ -148,8 +158,10 @@ export type Database = {
         Update: {
           created_at?: string
           description?: string
+          details?: string | null
           duration?: string
           fee?: string
+          gallery?: Json
           id?: string
           image?: string | null
           sort_order?: number
@@ -162,27 +174,36 @@ export type Database = {
         Row: {
           created_at: string
           description: string
+          details: string | null
           event_date: string
+          gallery: Json
           id: string
           image: string | null
+          location: string | null
           title: string
           updated_at: string
         }
         Insert: {
           created_at?: string
           description: string
+          details?: string | null
           event_date: string
+          gallery?: Json
           id?: string
           image?: string | null
+          location?: string | null
           title: string
           updated_at?: string
         }
         Update: {
           created_at?: string
           description?: string
+          details?: string | null
           event_date?: string
+          gallery?: Json
           id?: string
           image?: string | null
+          location?: string | null
           title?: string
           updated_at?: string
         }
@@ -196,6 +217,7 @@ export type Database = {
           button_two_label: string
           created_at: string
           id: string
+          image: string | null
           stat_courses: number
           stat_seminars: number
           stat_students: number
@@ -211,6 +233,7 @@ export type Database = {
           button_two_label?: string
           created_at?: string
           id?: string
+          image?: string | null
           stat_courses?: number
           stat_seminars?: number
           stat_students?: number
@@ -226,6 +249,7 @@ export type Database = {
           button_two_label?: string
           created_at?: string
           id?: string
+          image?: string | null
           stat_courses?: number
           stat_seminars?: number
           stat_students?: number
@@ -246,6 +270,7 @@ export type Database = {
           id: string
           instagram: string | null
           linkedin: string | null
+          logo_url: string | null
           phone: string | null
           updated_at: string
           working_hours: string | null
@@ -259,6 +284,7 @@ export type Database = {
           id?: string
           instagram?: string | null
           linkedin?: string | null
+          logo_url?: string | null
           phone?: string | null
           updated_at?: string
           working_hours?: string | null
@@ -272,6 +298,7 @@ export type Database = {
           id?: string
           instagram?: string | null
           linkedin?: string | null
+          logo_url?: string | null
           phone?: string | null
           updated_at?: string
           working_hours?: string | null

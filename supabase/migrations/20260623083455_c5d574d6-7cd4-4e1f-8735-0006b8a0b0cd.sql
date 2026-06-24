@@ -1,0 +1,1 @@
+ALTER TABLE public.hero_section ADD COLUMN IF NOT EXISTS image text;

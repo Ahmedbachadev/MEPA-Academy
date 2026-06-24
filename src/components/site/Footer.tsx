@@ -14,14 +14,13 @@ const quickLinks = [
 
 export function Footer() {
   const { data: s } = useSuspenseQuery(settingsQuery);
+  const logoSrc = s?.logo_url ?? undefined;
 
   return (
     <footer className="border-t border-border bg-foreground text-background">
       <div className="container-page grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-4">
         <div>
-          <div className="[&_*]:!text-white">
-            <Logo />
-          </div>
+          <Logo src={logoSrc} variant="dark" />
           <p className="mt-4 max-w-xs text-sm text-background/70">
             Modern Educational Proficiency Academy — empowering students with knowledge, character,
             and proficiency for a global future.

@@ -46,6 +46,8 @@ export const siteImages: Record<string, string> = {
 
 export function resolveImage(key: string | null | undefined, fallback = heroCampus): string {
   if (!key) return fallback;
+  // Full URL or data URL -> use as-is
+  if (/^(https?:|data:|blob:|\/)/i.test(key)) return key;
   return siteImages[key] ?? fallback;
 }
 
