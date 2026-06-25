@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { Logo } from "./Logo";
 import { settingsQuery } from "@/lib/site-queries";
 import { resolveImage } from "@/lib/site-images";
 
@@ -24,28 +23,29 @@ export function Navbar() {
   const logoSrc = settings?.logo_url ? resolveImage(settings.logo_url) : undefined;
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 12);
 
-  useEffect(() => {
-    const ids = links.map((l) => l.href.slice(1));
-    const sections = ids
-      .map((id) => document.getElementById(id))
-      .filter((el): el is HTMLElement => !!el);
-    if (!sections.length) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActive(entry.target.id);
-        });
-      },
-      { rootMargin: "-45% 0px -50% 0px", threshold: 0 },
-    );
-    sections.forEach((s) => observer.observe(s));
-    return () => observer.disconnect();
+      // Smooth scroll tracking calculation
+      const scrollPosition = window.scrollY + window.innerHeight / 3;
+      
+      for (const link of links) {
+        const id = link.href.slice(1);
+        const el = document.getElementById(id);
+        if (el) {
+          const top = el.offsetTop;
+          const height = el.offsetHeight;
+          if (scrollPosition >= top && scrollPosition < top + height) {
+            setActive(id);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
@@ -56,9 +56,22 @@ export function Navbar() {
           : "bg-transparent"
       }`}
     >
-      <div className="container-page flex h-16 items-center justify-between gap-4 md:h-20">
-        <a href="#home" className="shrink-0" aria-label="MEPA home">
-          <Logo src={logoSrc} />
+      {/* Enlarged Navigation Bar Layout Container (Increased from h-16/md:h-20 to h-20/md:h-24) */}
+      <div className="container-page flex h-20 items-center justify-between gap-4 md:h-24">
+        
+        {/* Maximum Sized Logo Holder Wrapper */}
+        <a href="#home" className="group shrink-0 block" aria-label="Home">
+          <div className="flex h-16 w-56 items-center justify-start overflow-hidden md:h-22 md:w-72">
+            {logoSrc ? (
+              <img 
+                src={logoSrc} 
+                alt="Logo" 
+                className="h-full w-full object-contain object-left transition-transform duration-200 group-hover:scale-102 will-change-transform"
+              />
+            ) : (
+              <div className="h-full w-full bg-muted animate-pulse rounded-md" />
+            )}
+          </div>
         </a>
 
         <nav className="hidden items-center gap-7 lg:flex" aria-label="Primary">
@@ -77,7 +90,7 @@ export function Navbar() {
         <div className="flex items-center gap-2">
           <a
             href="#contact"
-            className="hidden rounded-full bg-gradient-brand px-5 py-2.5 text-sm font-semibold text-white shadow-blue transition-transform hover:-translate-y-0.5 hover:shadow-elevated md:inline-block"
+            className="hidden rounded-full bg-gradient-brand px-5 py-2.5 text-sm font-semibold text-white shadow-blue transition-transform hover:-translate-y-0.5 hover:shadow-elevated md:inline-block will-change-transform"
           >
             Enroll Now
           </a>

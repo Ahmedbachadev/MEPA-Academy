@@ -123,14 +123,22 @@
 }
 
 @layer base {
-  * { border-color: var(--color-border); }
-  html { scroll-behavior: smooth; }
+  * { 
+    border-color: var(--color-border); 
+  }
+  html { 
+    scroll-behavior: smooth;
+    /* Prevent text reflow calculations during an ongoing scroll */
+    text-size-adjust: none;
+    -webkit-text-size-adjust: none;
+  }
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
+    text-rendering: optimizeSpeed; /* Shift engine behavior to prioritize interaction frame budget over pixel sub-smoothing */
+    overflow-x: hidden;
   }
   h1, h2, h3, h4 {
     font-family: var(--font-display);
@@ -170,6 +178,7 @@
     transform: scaleX(0);
     transform-origin: right;
     transition: transform var(--transition-base);
+    will-change: transform; /* Hardware accelerate the hover line animations */
   }
   .link-underline:hover::after,
   .link-underline[data-active="true"]::after {
