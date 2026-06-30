@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Suspense } from "react";
+import { staffQuery } from "@/lib/site-queries";
+import { Staff } from "@/components/site/Staff";
 import {
   heroQuery,
   visionMissionQuery,
@@ -17,7 +19,6 @@ import { About } from "@/components/site/About";
 import { Activities } from "@/components/site/Activities";
 import { Events } from "@/components/site/Events";
 import { Courses } from "@/components/site/Courses";
-import { Campus } from "@/components/site/Campus";
 import { Contact } from "@/components/site/Contact";
 import { Footer } from "@/components/site/Footer";
 
@@ -46,6 +47,7 @@ export const Route = createFileRoute("/")({
     context.queryClient.ensureQueryData(activitiesQuery);
     context.queryClient.ensureQueryData(eventsQuery);
     context.queryClient.ensureQueryData(coursesQuery);
+    context.queryClient.ensureQueryData(staffQuery); // <-- ADD THIS
     context.queryClient.ensureQueryData(galleryQuery);
     context.queryClient.ensureQueryData(settingsQuery);
   },
@@ -86,9 +88,6 @@ function Home() {
         </Suspense>
         <Suspense fallback={<SectionFallback />}>
           <Courses />
-        </Suspense>
-        <Suspense fallback={<SectionFallback />}>
-          <Campus />
         </Suspense>
         <Suspense fallback={<SectionFallback />}>
           <Contact />

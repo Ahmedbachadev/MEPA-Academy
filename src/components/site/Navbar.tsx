@@ -3,34 +3,42 @@ import { Menu, X } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { settingsQuery } from "@/lib/site-queries";
 import { resolveImage } from "@/lib/site-images";
+import { Link, useRouterState } from "@tanstack/react-router";
 
+// Removed Campus link and configured internal page routing vs hash anchors
 const links = [
-  { href: "#home", label: "Home" },
-  { href: "#vision", label: "Vision & Mission" },
-  { href: "#about", label: "About" },
-  { href: "#activities", label: "Activities" },
-  { href: "#events", label: "Seminars" },
-  { href: "#courses", label: "Courses" },
-  { href: "#campus", label: "Campus" },
-  { href: "#contact", label: "Contact" },
+  { href: "/#home", hashId: "home", label: "Home" },
+  { href: "/#vision", hashId: "vision", label: "Vision & Mission" },
+  { href: "/#about", hashId: "about", label: "About" },
+  { href: "/#activities", hashId: "activities", label: "Activities" },
+  { href: "/#events", hashId: "events", label: "Seminars" },
+  { href: "/#courses", hashId: "courses", label: "Courses" },
+  { href: "/staff", type: "route", label: "Our Staff" }, // Dynamic page route integration
+  { href: "/#contact", hashId: "contact", label: "Contact" },
 ];
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("home");
+  
   const { data: settings } = useQuery(settingsQuery);
   const logoSrc = settings?.logo_url ? resolveImage(settings.logo_url) : undefined;
+  
+  const currentPath = useRouterState({ select: (s) => s.location.pathname });
 
   useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 12);
 
-      // Smooth scroll tracking calculation
+      // Only track scroll hashes if the user is physically on the landing page
+      if (currentPath !== "/") return;
+
       const scrollPosition = window.scrollY + window.innerHeight / 3;
       
       for (const link of links) {
-        const id = link.href.slice(1);
+        if (link.type === "route") continue;
+        const id = link.hashId;
         const el = document.getElementById(id);
         if (el) {
           const top = el.offsetTop;
@@ -46,7 +54,7 @@ export function Navbar() {
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [currentPath]);
 
   return (
     <header
@@ -56,11 +64,10 @@ export function Navbar() {
           : "bg-transparent"
       }`}
     >
-      {/* Enlarged Navigation Bar Layout Container (Increased from h-16/md:h-20 to h-20/md:h-24) */}
       <div className="container-page flex h-20 items-center justify-between gap-4 md:h-24">
         
-        {/* Maximum Sized Logo Holder Wrapper */}
-        <a href="#home" className="group shrink-0 block" aria-label="Home">
+        {/* Dynamic Logo Wrapper Link */}
+        <Link to="/" className="group shrink-0 block" aria-label="Home">
           <div className="flex h-16 w-56 items-center justify-start overflow-hidden md:h-22 md:w-72">
             {logoSrc ? (
               <img 
@@ -72,24 +79,36 @@ export function Navbar() {
               <div className="h-full w-full bg-muted animate-pulse rounded-md" />
             )}
           </div>
-        </a>
+        </Link>
 
         <nav className="hidden items-center gap-7 lg:flex" aria-label="Primary">
           {links.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              data-active={active === l.href.slice(1)}
-              className="link-underline text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
-            >
-              {l.label}
-            </a>
+            l.type === "route" ? (
+              <Link
+                key={l.href}
+                to={l.href as "/"}
+                className={`link-underline text-sm font-medium transition-colors hover:text-foreground ${
+                  currentPath === l.href ? "text-primary" : "text-foreground/80"
+                }`}
+              >
+                {l.label}
+              </Link>
+            ) : (
+              <a
+                key={l.href}
+                href={l.href}
+                data-active={currentPath === "/" && active === l.hashId}
+                className="link-underline text-sm font-medium text-foreground/80 transition-colors hover:text-foreground data-[active=true]:text-primary"
+              >
+                {l.label}
+              </a>
+            )
           ))}
         </nav>
 
         <div className="flex items-center gap-2">
           <a
-            href="#contact"
+            href="/#contact"
             className="hidden rounded-full bg-gradient-brand px-5 py-2.5 text-sm font-semibold text-white shadow-blue transition-transform hover:-translate-y-0.5 hover:shadow-elevated md:inline-block will-change-transform"
           >
             Enroll Now
@@ -110,17 +129,30 @@ export function Navbar() {
         <div className="border-t border-border bg-background lg:hidden">
           <nav className="container-page flex flex-col py-3" aria-label="Mobile">
             {links.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                onClick={() => setOpen(false)}
-                className="rounded-md px-2 py-3 text-sm font-medium text-foreground/80 hover:bg-muted hover:text-foreground"
-              >
-                {l.label}
-              </a>
+              l.type === "route" ? (
+                <Link
+                  key={l.href}
+                  to={l.href as "/"}
+                  onClick={() => setOpen(false)}
+                  className={`rounded-md px-2 py-3 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground ${
+                    currentPath === l.href ? "bg-muted text-primary" : "text-foreground/80"
+                  }`}
+                >
+                  {l.label}
+                </Link>
+              ) : (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  onClick={() => setOpen(false)}
+                  className="rounded-md px-2 py-3 text-sm font-medium text-foreground/80 hover:bg-muted hover:text-foreground"
+                >
+                  {l.label}
+                </a>
+              )
             ))}
             <a
-              href="#contact"
+              href="/#contact"
               onClick={() => setOpen(false)}
               className="mt-2 rounded-full bg-gradient-brand px-5 py-2.5 text-center text-sm font-semibold text-white shadow-blue"
             >

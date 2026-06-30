@@ -142,6 +142,42 @@ export type Database = {
           title: string
           updated_at: string
         }
+        staff: {
+        Row: {
+          id: string
+          name: string
+          group_type: "CEO" | "English courses staff" | "Computer courses staff"
+          bio: string
+          image: string | null
+          tags: string[]
+          sort_order: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          group_type: "CEO" | "English courses staff" | "Computer courses staff"
+          bio: string
+          image?: string | null
+          tags?: string[]
+          sort_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          group_type?: "CEO" | "English courses staff" | "Computer courses staff"
+          bio?: string
+          image?: string | null
+          tags?: string[]
+          sort_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
         Insert: {
           created_at?: string
           description: string

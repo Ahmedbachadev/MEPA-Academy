@@ -16,6 +16,7 @@ import {
   Mail,
   LogOut,
   ShieldCheck,
+  Users2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -39,6 +40,7 @@ const NAV: NavItem[] = [
   { to: "/admin/activities", label: "Activities", icon: Activity },
   { to: "/admin/events", label: "Events", icon: Calendar },
   { to: "/admin/courses", label: "Courses", icon: BookOpen },
+  { to: "/admin/staff", label: "Staff", icon: Users2 },
   { to: "/admin/gallery", label: "Gallery", icon: Camera },
   { to: "/admin/messages", label: "Messages", icon: Mail },
   { to: "/admin/settings", label: "Settings", icon: SettingsIcon },

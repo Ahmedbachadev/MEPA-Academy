@@ -100,3 +100,24 @@ export const settingsQuery = queryOptions({
     return data;
   },
 });
+export const staffQuery = queryOptions({
+  queryKey: ["site", "staff"],
+  queryFn: async () => {
+    const { data, error } = await supabase
+      .from("staff" as any)
+      .select("*")
+      .order("sort_order", { ascending: true });
+    if (error) throw error;
+    
+    // Casting to unknown first bypasses the strict overlapping type guard cleanly
+    return (data as unknown) as Array<{
+      id: string;
+      name: string;
+      group_type: "CEO" | "English courses staff" | "Computer courses staff";
+      bio: string;
+      image: string | null;
+      tags: string[];
+      sort_order: number;
+    }>;
+  },
+});

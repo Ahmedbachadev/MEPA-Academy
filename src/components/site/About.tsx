@@ -38,7 +38,7 @@ export function About() {
             />
           </div>
           <div className="absolute -bottom-6 -right-4 hidden rounded-2xl border border-border bg-card px-5 py-4 shadow-elevated sm:block">
-            <div className="font-display text-3xl font-bold text-brand-red">15+</div>
+            <div className="font-display text-3xl font-bold text-brand-red">2+</div>
             <div className="text-xs font-medium text-muted-foreground">Years of Excellence</div>
           </div>
         </motion.div>
